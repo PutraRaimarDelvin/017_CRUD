@@ -74,3 +74,26 @@ app.post("/biodata", async (req, res) => {
     data: { id: result.insertId, nama, nim, kelas },
   });
 });
+
+// PUT (Update data)
+app.put("/biodata/:id", async (req, res) => {
+  const { id } = req.params;
+  const { nama, nim, kelas } = req.body;
+  const [result] = await pool.query(
+    "UPDATE biodata SET nama = ?, nim = ?, kelas = ? WHERE id = ?",
+    [nama, nim, kelas, id]
+  );
+  if (result.affectedRows === 0)
+    return res.status(404).json({ status: "error", message: "Data tidak ditemukan" });
+  res.json({ status: "success", message: "✅ Data berhasil diperbarui" });
+});
+
+// DELETE (Hapus data)
+app.delete("/biodata/:id", async (req, res) => {
+  const { id } = req.params;
+  const [result] = await pool.query("DELETE FROM biodata WHERE id = ?", [id]);
+  if (result.affectedRows === 0)
+    return res.status(404).json({ status: "error", message: "Data tidak ditemukan" });
+  res.json({ status: "success", message: "✅ Data berhasil dihapus" });
+});
+
