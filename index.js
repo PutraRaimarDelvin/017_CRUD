@@ -52,3 +52,25 @@ app.get("/biodata/:id.json", async (req, res) => {
     return res.status(404).json({ status: "error", message: "Data tidak ditemukan" });
   res.json({ status: "success", data: rows[0] });
 });
+
+
+// POST data baru
+app.post("/biodata", async (req, res) => {
+  const { nama, nim, kelas } = req.body;
+  if (!nama || !nim || !kelas)
+    return res.status(400).json({ status: "error", message: "Field wajib diisi" });
+
+  const [exist] = await pool.query("SELECT id FROM biodata WHERE nim = ?", [nim]);
+  if (exist.length)
+    return res.status(409).json({ status: "error", message: "NIM sudah terdaftar" });
+
+  const [result] = await pool.query(
+    "INSERT INTO biodata (nama, nim, kelas) VALUES (?, ?, ?)",
+    [nama, nim, kelas]
+  );
+  res.status(201).json({
+    status: "success",
+    message: "✅ Data berhasil ditambahkan",
+    data: { id: result.insertId, nama, nim, kelas },
+  });
+});
