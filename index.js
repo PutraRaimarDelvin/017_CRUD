@@ -37,3 +37,18 @@ app.listen(PORT, async () => {
   }
   console.log(`Server berjalan di http://localhost:${PORT}`);
 });
+
+// GET semua data
+app.get("/biodata.json", async (_req, res) => {
+  const [rows] = await pool.query("SELECT * FROM biodata ORDER BY id ASC");
+  res.json({ status: "success", total: rows.length, data: rows });
+});
+
+// GET berdasarkan ID
+app.get("/biodata/:id.json", async (req, res) => {
+  const { id } = req.params;
+  const [rows] = await pool.query("SELECT * FROM biodata WHERE id = ?", [id]);
+  if (!rows.length)
+    return res.status(404).json({ status: "error", message: "Data tidak ditemukan" });
+  res.json({ status: "success", data: rows[0] });
+});
