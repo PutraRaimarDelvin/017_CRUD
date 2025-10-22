@@ -1,3 +1,13 @@
-## screenshot di postman
+## screenshot di postman CRUD
 
-![image alt](https://github.com/PutraRaimarDelvin/017_ConnectionDb/blob/main/screenshot.jpg?raw=true)
+1. **GET**
+![image](screenshot/GET.png)
+
+2. **POST** 
+![alt text](screenshot/Post.png)
+
+3. **UPDATE**  
+![alt text](screenshot/Update.png)
+
+4. **DELETE** 
+![alt text](screenshot/Delete.png)
